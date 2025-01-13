@@ -1,0 +1,11 @@
+Model Information:
+* title:	Stylized Island cottage (mill)
+* source:	https://sketchfab.com/3d-models/stylized-island-cottage-mill-94f397a9598c4ed293a7934aa6cec892
+* author:	SlagPerch 3D (https://sketchfab.com/slagperch3d)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Stylized Island cottage (mill)" (https://sketchfab.com/3d-models/stylized-island-cottage-mill-94f397a9598c4ed293a7934aa6cec892) by SlagPerch 3D (https://sketchfab.com/slagperch3d) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
