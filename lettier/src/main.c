@@ -14,15 +14,15 @@ int main(void)
     // Initialization
     //--------------------------------------------------------------------------------------
     const int screenWidth = 800;
-    const int screenHeight = 450;
+    const int screenHeight = 600;
 
     SetConfigFlags(FLAG_MSAA_4X_HINT);  // Enable Multi Sampling Anti Aliasing 4x (if available)
     InitWindow(screenWidth, screenHeight, "model load");
 
     // Define the camera to look into our 3d world
     Camera camera = { 0 };
-    camera.position = (Vector3){ 4.0f, 4.0f, 4.0f };    // Camera position
-    camera.target = (Vector3){ 0.0f, 1.0f,-1.0f };      // Camera looking at point
+    camera.position = (Vector3){ 1.0f, 1.0f, 1.0f };    // Camera position
+    camera.target = (Vector3){ 0.0f, 0.0f, 0.0f };      // Camera looking at point
     camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };          // Camera up vector (rotation towards target)
     camera.fovy = 45.0f;                                // Camera field-of-view Y
     camera.projection = CAMERA_PERSPECTIVE;             // Camera projection type
@@ -54,19 +54,19 @@ int main(void)
         //----------------------------------------------------------------------------------
         BeginDrawing();
 
-        ClearBackground(RAYWHITE);
+            ClearBackground(RAYWHITE);
 
-        BeginMode3D(camera);
+            BeginMode3D(camera);
 
-        DrawModel(model, position, 0.2f, WHITE);   // Draw 3d model with texture
+                DrawModel(model, position, 0.2f, WHITE);   // Draw 3d model with texture
 
-        DrawGrid(10, 1.0f);     // Draw a grid
+                DrawGrid(10, 1.0f);     // Draw a grid
 
-        EndMode3D();
+            EndMode3D();
 
-        DrawText("Cottage", screenWidth - 210, screenHeight - 20, 10, GRAY);
+            DrawText("Cottage", screenWidth - 210, screenHeight - 20, 10, GRAY);
 
-        DrawFPS(10, 10);
+            DrawFPS(10, 10);
 
         EndDrawing();
         //----------------------------------------------------------------------------------
