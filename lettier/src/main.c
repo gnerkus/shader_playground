@@ -106,15 +106,30 @@ int main(void)
     // Raylib loads and unloads textures automatically for .gltf / .glb
     Model scene = LoadModel("resources/scene.gltf");
 
-    scene.materials[0].shader = shader;
+    // MATERIAL index + 1
+    scene.materials[1].shader = shader;
+//    scene.materials[2].shader = shader;
+    scene.materials[3].shader = shader;
+    scene.materials[4].shader = shader;
+    scene.materials[5].shader = shader; // METAL
+//    scene.materials[6].shader = shader;
+//    scene.materials[7].shader = shader;
 
     // Setup materials[0].maps default parameters
-    scene.materials[0].maps[MATERIAL_MAP_ALBEDO].color = WHITE;
-    scene.materials[0].maps[MATERIAL_MAP_METALNESS].value = 0.0f;
-    scene.materials[0].maps[MATERIAL_MAP_ROUGHNESS].value = 0.0f;
+    scene.materials[1].maps[MATERIAL_MAP_ALBEDO].color = WHITE;
+    scene.materials[1].maps[MATERIAL_MAP_METALNESS].value = 0.0f;
+    scene.materials[1].maps[MATERIAL_MAP_ROUGHNESS].value = 0.0f;
     // not sure about the occlusion and emission values
-    scene.materials[0].maps[MATERIAL_MAP_OCCLUSION].value = 1.0f;
-    scene.materials[0].maps[MATERIAL_MAP_EMISSION].color = (Color){ 255, 162, 0, 255 };
+    scene.materials[1].maps[MATERIAL_MAP_OCCLUSION].value = 1.0f;
+    scene.materials[1].maps[MATERIAL_MAP_EMISSION].color = (Color){ 255, 162, 0, 255 };
+
+    // Setup materials[0].maps default parameters
+//    scene.materials[5].maps[MATERIAL_MAP_ALBEDO].color = WHITE;
+    scene.materials[5].maps[MATERIAL_MAP_METALNESS].value = 0.0f;
+    scene.materials[5].maps[MATERIAL_MAP_ROUGHNESS].value = 0.0f;
+    // not sure about the occlusion and emission values
+    scene.materials[5].maps[MATERIAL_MAP_OCCLUSION].value = 1.0f;
+    scene.materials[5].maps[MATERIAL_MAP_EMISSION].color = (Color){ 255, 162, 0, 255 };
 
     Vector3 position = { 0.0f, 0.0f, 0.0f };    // Set model position
 
@@ -125,6 +140,13 @@ int main(void)
     lights[2] = CreateLight(LIGHT_POINT, (Vector3){ -2.0f, 1.0f, 1.0f }, (Vector3){ 0.0f, 0.0f, 0.0f }, RED, 8.3f, shader);
     lights[3] = CreateLight(LIGHT_POINT, (Vector3){ 1.0f, 1.0f, -2.0f }, (Vector3){ 0.0f, 0.0f, 0.0f }, BLUE, 2.0f, shader);
 
+    // Setup material texture maps usage in shader
+    // NOTE: By default, the texture maps are always used
+    int usage = 1;
+    SetShaderValue(shader, GetShaderLocation(shader, "useTexAlbedo"), &usage, SHADER_UNIFORM_INT);
+    SetShaderValue(shader, GetShaderLocation(shader, "useTexNormal"), &usage, SHADER_UNIFORM_INT);
+    SetShaderValue(shader, GetShaderLocation(shader, "useTexMRA"), &usage, SHADER_UNIFORM_INT);
+    SetShaderValue(shader, GetShaderLocation(shader, "useTexEmissive"), &usage, SHADER_UNIFORM_INT);
 
     DisableCursor();                    // Limit cursor to relative movement inside the window
     SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
