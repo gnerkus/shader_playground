@@ -52,6 +52,9 @@ int main(void)
     camera.fovy = 45.0f;                                // Camera field-of-view Y
     camera.projection = CAMERA_PERSPECTIVE;             // Camera projection type
 
+    Model model = LoadModel("resources/torus.glb");
+    Texture texture = LoadTexture("resources/torus_diffuse.png");
+
     // Load basic lighting shader
     Shader shader = LoadShader(TextFormat("resources/shaders/lighting.vert", GLSL_VERSION),
                                TextFormat("resources/shaders/lighting.frag", GLSL_VERSION));
@@ -71,6 +74,11 @@ int main(void)
     lights[1] = CreateLight(LIGHT_POINT, (Vector3){ 2, 1, 2 }, Vector3Zero(), RED, shader);
     lights[2] = CreateLight(LIGHT_POINT, (Vector3){ -2, 1, 2 }, Vector3Zero(), GREEN, shader);
     lights[3] = CreateLight(LIGHT_POINT, (Vector3){ 2, 1, -2 }, Vector3Zero(), BLUE, shader);
+
+    model.materials[1].shader = shader;                     // Set shader effect to 3d model
+    model.materials[1].maps[MATERIAL_MAP_DIFFUSE].texture = texture; // Bind texture to model
+
+    Vector3 position = { 0.0f, 0.0f, 0.0f };    // Set model position
 
     SetTargetFPS(60);                   // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -100,31 +108,26 @@ int main(void)
         //----------------------------------------------------------------------------------
         BeginDrawing();
 
-        ClearBackground(RAYWHITE);
+            ClearBackground(RAYWHITE);
 
-        BeginMode3D(camera);
+            BeginMode3D(camera);
 
-        BeginShaderMode(shader);
+                DrawModel(model, position, 0.2f, WHITE);   // Draw 3d model with texture
 
-        DrawPlane(Vector3Zero(), (Vector2) { 10.0, 10.0 }, WHITE);
-        DrawCube(Vector3Zero(), 2.0, 4.0, 2.0, WHITE);
+                // Draw spheres to show where the lights are
+                for (int i = 0; i < MAX_LIGHTS; i++)
+                {
+                    if (lights[i].enabled) DrawSphereEx(lights[i].position, 0.2f, 8, 8, lights[i].color);
+                    else DrawSphereWires(lights[i].position, 0.2f, 8, 8, ColorAlpha(lights[i].color, 0.3f));
+                }
 
-        EndShaderMode();
+                DrawGrid(10, 1.0f);
 
-        // Draw spheres to show where the lights are
-        for (int i = 0; i < MAX_LIGHTS; i++)
-        {
-            if (lights[i].enabled) DrawSphereEx(lights[i].position, 0.2f, 8, 8, lights[i].color);
-            else DrawSphereWires(lights[i].position, 0.2f, 8, 8, ColorAlpha(lights[i].color, 0.3f));
-        }
+            EndMode3D();
 
-        DrawGrid(10, 1.0f);
+            DrawFPS(10, 10);
 
-        EndMode3D();
-
-        DrawFPS(10, 10);
-
-        DrawText("Use keys [Y][R][G][B] to toggle lights", 10, 40, 20, DARKGRAY);
+            DrawText("Use keys [Y][R][G][B] to toggle lights", 10, 40, 20, DARKGRAY);
 
         EndDrawing();
         //----------------------------------------------------------------------------------
@@ -133,6 +136,8 @@ int main(void)
     // De-Initialization
     //--------------------------------------------------------------------------------------
     UnloadShader(shader);   // Unload shader
+    UnloadTexture(texture);     // Unload texture
+    UnloadModel(model);         // Unload model
 
     CloseWindow();          // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
