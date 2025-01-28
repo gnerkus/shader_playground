@@ -29,13 +29,16 @@ struct Light {
 
 // Input lighting values
 uniform Light lights[MAX_LIGHTS];
+// ambient color
 uniform vec4 ambient;
+// camera position
 uniform vec3 viewPos;
 
 void main()
 {
     // Texel color fetching from texture sampler
     vec4 texelColor = texture(texture0, fragTexCoord);
+
     vec3 lightDot = vec3(0.0);
     vec3 normal = normalize(fragNormal);
     vec3 viewD = normalize(viewPos - fragPosition);
