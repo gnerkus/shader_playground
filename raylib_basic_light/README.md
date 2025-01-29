@@ -14,17 +14,96 @@
 ```glsl
 void main()
 {
+    vec4 texelColor = texture(texture0, fragTexCoord);
+    
     float ambientStrength = 0.1;
-    vec3 ambient = ambientStrength * lightColor;
+    vec4 ambient = ambientStrength * lightColor;
 
-    vec3 result = ambient * objectColor;
-    FragColor = vec4(result, 1.0);
+    vec4 FragColor = ambient * texelColor;
+    // when w is 1.0, the other co-ordinates are normalized
+    // w is a scaling factor
+    FragColor.w = 1.0;
 } 
 ```
 
 ## Diffuse lighting [learnopengl lighting]
 - simulates the directional impact a light object has on an object
+- gives the object more brightness the closer its fragments are aligned to the light rays from a light source.
+- if the light ray is perpendicular to the object's surface, the light has the greatest impact
+- to measure the angle between the light ray and the fragment of the object it's hitting, we use a normal vector. The normal vector is a vector perpendicular to the fragment's surface.
+- use dot product to get the angle between the light ray and the normal vector. the closer the dot product is to 1, the lower the angle between the two vectors, the lesser the effect of the light
+### normal vector
+- In the vertex shader from Raylib, this is represented by the value `vertexNormal`
+```glsl
+// Input vertex attributes
+in vec3 vertexPosition;
+in vec2 vertexTexCoord;
+in vec3 vertexNormal;
+in vec4 vertexColor;
+```
+- We send both the vertex normal and vertex position to the fragment shader:
+```glsl
+void main()
+{
+    // Send vertex attributes to fragment shader
+    // 
+    fragNormal = normalize(vec3(matNormal*vec4(vertexNormal, 1.0)));
 
+    // Calculate final vertex position
+    // mvp is the model-view-projection matrix
+    gl_Position = mvp*vec4(vertexPosition, 1.0);
+}
+```
+- To calculate the diffuse color, we need the light's position vector and the fragment's position vector.
+- The light's position vector can be declared as a uniform:
+```glsl
+struct Light {
+    // other light properties
+    vec3 position;
+};
+
+// Input lighting values
+uniform Light lights[MAX_LIGHTS];
+```
+- The uniform's value is set from the source code
+```c
+// Send to shader light position values
+float position[3] = { light.position.x, light.position.y, light.position.z };
+SetShaderValue(shader, light.positionLoc, position, SHADER_UNIFORM_VEC3);
+```
+- We need the fragment's position to be in world space. To accomplish this, we multiply the vertex position attribute with the model matrix (not the view and projection matrix) to transform it to world space co-ordinates.
+```glsl
+void main()
+{
+    // Send vertex attributes to fragment shader
+    // matModel is the model's matrix
+    fragPosition = vec3(matModel*vec4(vertexPosition, 1.0));
+    
+    fragNormal = normalize(vec3(matNormal*vec4(vertexNormal, 1.0)));
+
+    // Calculate final vertex position
+    gl_Position = mvp*vec4(vertexPosition, 1.0);
+}
+```
+- We obtain the fragment's position in the fragment shader:
+```glsl
+in vec3 fragPosition;
+```
+- First, we need to calculate the direction vector between the light source and the fragment's position
+```glsl
+vec3 normal = normalize(fragNormal);
+vec3 lightDir = normalize(light.position - fragPosition);
+```
+- In lighting calculations, make sure to always normalize the relevant vectors to ensure they're actual unit vectors since we only care about the direction and not the magnitude.
+- Second, we calculate the diffuse impact of the light on the current fragment by taking the dot product between the normal and light direction vectors
+```glsl
+float NdotL = max(dot(normal, lightDir), 0.0);
+vec3 diffuse = light.color.rgb * NdotL;
+```
+- Third, we can now combine both the ambient and diffuse
+```glsl
+vec3 result = (ambient + diffuse) * objectColor;
+```
 
 ## Specular lighting [learnopengl lighting]
 - simulates the bright spot of a light that appears on shiny objects. Specular highlights are more inclined to the color of the light than the color of the object.
@@ -155,6 +234,10 @@ When loading a shader, the following vertex attributes and uniform
 *       #define RL_DEFAULT_SHADER_SAMPLER2D_NAME_TEXTURE1  "texture1"          // texture1 (texture slot active 1)
 *       #define RL_DEFAULT_SHADER_SAMPLER2D_NAME_TEXTURE2  "texture2"          // texture2 (texture slot active 2)
 ```
+
+### Explanation of the 'w' co-ordinate
+- "The w component is a factor that divides the other vector components. When w is 1, the homogenous vector coordinates are normalized" [note](https://stackoverflow.com/a/2423060)
+- I finally understood it when I read in the Red Book that "homogeneous vertex (x, y, z, w)T corresponds to the three-dimensional point (x/w, y/w, z/w)T" and that "the sequence of points (1, 2, 0, 1), (1, 2, 0, 0.01), and (1, 2.0, 0.0, 0.0001), corresponds to the euclidean points (1, 2), (100, 200), and (10000, 20000)" [note](https://stackoverflow.com/questions/2422750/in-opengl-vertex-shaders-what-is-w-and-why-do-i-divide-by-it#comment60741262_2423060)
 
 
 
