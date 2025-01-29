@@ -102,7 +102,9 @@ vec3 diffuse = light.color.rgb * NdotL;
 ```
 - Third, we can now combine both the ambient and diffuse
 ```glsl
-vec3 result = (ambient + diffuse) * objectColor;
+vec4 texelColor = texture(texture0, fragTexCoord);
+vec4 FragColor = (ambient + diffuse) * texelColor;
+FragColor.w = 1.0;
 ```
 
 ## Specular lighting [learnopengl lighting]
