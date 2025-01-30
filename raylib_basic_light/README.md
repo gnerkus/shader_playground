@@ -237,12 +237,43 @@ When loading a shader, the following vertex attributes and uniform
 *       #define RL_DEFAULT_SHADER_SAMPLER2D_NAME_TEXTURE2  "texture2"          // texture2 (texture slot active 2)
 ```
 
+# Coordinate systems
+- OpenGL expects all the vertices, to be in normalized device coordinates. That is, the x,y,z of each vertex should be between 1.0 and -1.0
+- To transform coordinates from one space to the next we'll use several transformation matrices 
+  of which the most important are the model, view and projection matrix.
+- Our vertex coordinates first start in local space as local coordinates and are then further processed to world coordinates, view coordinates, clip coordinates and eventually end up as screen coordinates.
+    1. local space is transformed by the model matrix to world space
+    2. world space is transformed by the view matrix to view space
+    3. view space is transformed by the projection matrix to clip space
+    4. clip space is transformed to screen space via viewport transform
+
+## local space (object space)
+- co-ordinates of the object relative to its local origin
+- 
+
+## world space
+- co-ordinates relative to some global origin, together with manay other objects
+
+## view space (eye space)
+- co-ordinates as seen from the camera or viewer's point of view
+
+## clip space
+- processed to the 1.0 and -1.0 range
+- determine which vertices end up on the screen
+- will add perspective if using perspective projection
+
+## screen space
+- co-ordinates from -1.0 and 1.0 from the clip space are transformed to the co-ordinate range 
+  defined by `glViewport`.
+- co-ordinates from here are sent to the rasterizer to turn them into fragments.
+
 ### Explanation of the 'w' co-ordinate
 - "The w component is a factor that divides the other vector components. When w is 1, the homogenous vector coordinates are normalized" [note](https://stackoverflow.com/a/2423060)
-- I finally understood it when I read in the Red Book that "homogeneous vertex (x, y, z, w)T corresponds to the three-dimensional point (x/w, y/w, z/w)T" and that "the sequence of points (1, 2, 0, 1), (1, 2, 0, 0.01), and (1, 2.0, 0.0, 0.0001), corresponds to the euclidean points (1, 2), (100, 200), and (10000, 20000)" [note](https://stackoverflow.com/questions/2422750/in-opengl-vertex-shaders-what-is-w-and-why-do-i-divide-by-it#comment60741262_2423060)
+- 'I finally understood it when I read in the Red Book that "homogeneous vertex (x, y, z, w)T corresponds to the three-dimensional point (x/w, y/w, z/w)T" and that "the sequence of points (1, 2, 0, 1), (1, 2, 0, 0.01), and (1, 2.0, 0.0, 0.0001), corresponds to the euclidean points (1, 2), (100, 200), and (10000, 20000)"' [note](https://stackoverflow.com/questions/2422750/in-opengl-vertex-shaders-what-is-w-and-why-do-i-divide-by-it#comment60741262_2423060)
 
 
 
 
 [graphics programming lecture]: https://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/graphics_10_1_eng_web.html#1
 [learnopengl lighting]: https://learnopengl.com/Lighting/Basic-Lighting
+[learnopengl coordinates]: https://learnopengl.com/Getting-started/Coordinate-Systems
