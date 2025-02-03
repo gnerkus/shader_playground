@@ -237,6 +237,16 @@ When loading a shader, the following vertex attributes and uniform
 *       #define RL_DEFAULT_SHADER_SAMPLER2D_NAME_TEXTURE2  "texture2"          // texture2 (texture slot active 2)
 ```
 
+# Transformations [learnopengl transformations]
+## Model matrix
+- The model matrix is a transformation matrix that translates, scales and/or rotates your object 
+to place it in the world at a location/orientation they belong to.
+- Think of it as:
+  - transforming a house by scaling it down (it was a bit too large in local space)
+  - translating it to a suburbia town and,
+  - rotating it a bit to the left on the y-axis so that it neatly fits with the neighboring houses.
+
+
 # Coordinate systems
 - OpenGL expects all the vertices, to be in normalized device coordinates. That is, the x,y,z of each vertex should be between 1.0 and -1.0
 - To transform coordinates from one space to the next we'll use several transformation matrices 
@@ -277,3 +287,4 @@ When loading a shader, the following vertex attributes and uniform
 [graphics programming lecture]: https://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/graphics_10_1_eng_web.html#1
 [learnopengl lighting]: https://learnopengl.com/Lighting/Basic-Lighting
 [learnopengl coordinates]: https://learnopengl.com/Getting-started/Coordinate-Systems
+[learnopengl transformations]: https://learnopengl.com/Getting-started/Transformations
