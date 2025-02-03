@@ -288,3 +288,4 @@ to place it in the world at a location/orientation they belong to.
 [learnopengl lighting]: https://learnopengl.com/Lighting/Basic-Lighting
 [learnopengl coordinates]: https://learnopengl.com/Getting-started/Coordinate-Systems
 [learnopengl transformations]: https://learnopengl.com/Getting-started/Transformations
+[no texture phong example]: https://github.com/MrDiver/ShadingExperiments-Raylib/blob/main/src/examples/1_basic_phong/res/shader/basic_lighting.vs
