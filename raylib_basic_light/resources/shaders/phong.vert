@@ -3,16 +3,16 @@
 // Input vertex attributes
 // ===================================================================================
 
-// vertex position
+// position vector for each vertex
 in vec3 vertexPosition;
-// vertex input attribute: texture coordinate
+// texture coordinate for each vertex
 in vec2 vertexTexCoord;
-// vertex normal
+// normal vector for each vertex
 in vec3 vertexNormal;
-// vertex color
+// rgb color for each vertex
 in vec4 vertexColor;
 
-// Input uniform values; These are automatically filled by Raylib
+// Input uniform values; these are automatically filled by Raylib
 // ====================================================================================
 
 // Model-view-projection matrix
@@ -26,9 +26,14 @@ uniform mat4 matNormal;
 
 // Output vertex attributes (to fragment shader)
 // ======================================================================================
+// A fragment is a pixel with additional information
+// position vector for each fragment
 out vec3 fragPosition;
+// texture coordinate for each fragment
 out vec2 fragTexCoord;
+// rgba color for each fragment
 out vec4 fragColor;
+// normal vector for each fragment
 out vec3 fragNormal;
 
 void main() {
