@@ -60,8 +60,9 @@ void main() {
     */
     fragNormal = normalize(vec3(matNormal*vec4(vertexNormal, 1.0)));
 
-    // Calculate final vertex position
     /**
+        Calculate final vertex position
+
         1. Add the w dimension to each vertex position with vec4()
         2. Multiply the vertex positions by the model-view-projection matrix to perform the following transformations:
             2.1 local space -> world space (model matrix)
