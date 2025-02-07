@@ -66,15 +66,34 @@ void main() {
     vec3 lightDirection = normalize(lights[0].position - fragPosition);
 
     /**
-        Calculate the angle between the light vector and the fragment normal
+        Calculate the strength of the reflection of the light source off the fragment
+
+        The dot product is the difference between the reflected light's vector and the fragment normal vector
+
+        If both vectors point in the same direction, the dot product is at its maximum.
+        If both vectors are perpendicular, the dot product is 0
+        If both vectors point in different directions, the dot product is negative with max value
+
+        ref: https://www.khanacademy.org/math/multivariable-calculus/thinking-about-multivariable-function/x786f2022:vectors-and-matrices/a/dot-products-mvc
     */
     float NdotL = max(dot(normal, lightDirection), 0.0);
     /**
         DIFFUSE
         Calculate the color of the diffuse aspect of the surface
+
+        - we use the lights color for the diffuse
     */
     lightDot += lights[0].color.rgb * NdotL;
     /**
         SPECULAR
+        Calculate the color of the specular aspect of the surface
+
+        - we also use the lights color for the specular
+        - TODO: define a separate uniform to contain the specular color
+        - 16 is the shininess
+        - TODO: define a uniform to contain the specular shininess
     */
+    float specCo = 0.0;
+    if (NdotL > 0.0) specCo = pow(max(0.0, dot(viewD, reflect(-(lightDirection), normal))), 16.0);
+    spec += specCo;
 }
