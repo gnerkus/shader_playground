@@ -281,7 +281,11 @@ to place it in the world at a location/orientation they belong to.
 - "The w component is a factor that divides the other vector components. When w is 1, the homogenous vector coordinates are normalized" [note](https://stackoverflow.com/a/2423060)
 - 'I finally understood it when I read in the Red Book that "homogeneous vertex (x, y, z, w)T corresponds to the three-dimensional point (x/w, y/w, z/w)T" and that "the sequence of points (1, 2, 0, 1), (1, 2, 0, 0.01), and (1, 2.0, 0.0, 0.0001), corresponds to the euclidean points (1, 2), (100, 200), and (10000, 20000)"' [note](https://stackoverflow.com/questions/2422750/in-opengl-vertex-shaders-what-is-w-and-why-do-i-divide-by-it#comment60741262_2423060)
 
-
+# Dot product
+## References
+- Uses of dot product in shaders [uses of dot product in shaders]
+- Understanding the dot product [dot product]
+- 
 
 
 [graphics programming lecture]: https://www.mathematik.uni-marburg.de/~thormae/lectures/graphics1/graphics_10_1_eng_web.html#1
@@ -289,3 +293,5 @@ to place it in the world at a location/orientation they belong to.
 [learnopengl coordinates]: https://learnopengl.com/Getting-started/Coordinate-Systems
 [learnopengl transformations]: https://learnopengl.com/Getting-started/Transformations
 [no texture phong example]: https://github.com/MrDiver/ShadingExperiments-Raylib/blob/main/src/examples/1_basic_phong/res/shader/basic_lighting.vs
+[uses of dot product in shaders]: https://medium.com/@adder1812/dot-product-is-the-coolest-math-in-shaders-e5baa66a9bbf
+[dot product]: https://andytech.art/the-dot-product-for-artists
