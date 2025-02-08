@@ -54,14 +54,22 @@ void main() {
     vec3 specular = vec3(0.0);
     // fragment normal is imported from the vertex shader
     vec3 normal = normalize(fragNormal);
+    /**
+        Compute the camera's direction vector as the difference between the camera's position and the frag's
+        position vector.
+
+        This is the direction of the fragment from the point of view of the camera
+    */
     vec3 viewD = normalize(viewPos - fragPosition);
 
     vec4 tint = colDiffuse * fragColor;
 
     // POINT LIGHT
     /**
-        Compute light's direction vector as a difference between the light's position vector and the frag's
+        Compute light's direction vector as the difference between the light's position vector and the frag's
         position vector.
+
+        This is the direction of the reflected light.
     */
     vec3 lightDirection = normalize(lights[0].position - fragPosition);
 
@@ -96,4 +104,6 @@ void main() {
     float specCo = 0.0;
     if (NdotL > 0.0) specCo = pow(max(0.0, dot(viewD, reflect(-(lightDirection), normal))), 16.0);
     spec += specCo;
+
+
 }
