@@ -63,6 +63,7 @@ int main(void)
 
     // Ambient light level (some basic lighting)
     int ambientLoc = GetShaderLocation(shader, "ambient");
+    // ambient light is dark grey (rgba(0.1, 0.1, 0.1, 0.1))
     SetShaderValue(shader, ambientLoc, (float[4]){ 0.1f, 0.1f, 0.1f, 1.0f }, SHADER_UNIFORM_VEC4);
 
     // Create lights
